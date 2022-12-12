@@ -1,11 +1,14 @@
 import { Grid, Paper, Avatar, TextField, Checkbox, Button } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FormGroup, FormControlLabel } from '@mui/material'
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { useState } from 'react';
 
 
 const Adform = () => {
+    useEffect(() => {
+
+    }, [])
     const handleNameChange = (e) => {
         setname(e.target.value);
     }
@@ -17,15 +20,45 @@ const Adform = () => {
     }
     const [obj, setObj] = useState({ Name: '', Age: 0, Date: '' });
     const handleClick = () => {
-        (!(age >= 18 && age <= 65)) ? alert("Not eligble") :
-            (!name || !regDate) ? alert("Fill the Deets correctly.")
-                : setObj({
-                    ...obj,
-                    Name: name,
-                    Age: age,
-                    Date: regDate
-                });
-        console.log(obj);
+        if (!name) {
+            alert("Fill the name correctly");
+            setname('');
+        }
+        else if (!(age >= 18 && age <= 65)) {
+            alert("You are not eligble")
+        }
+        else if (!regDate) {
+            alert("Fill the date correctly");
+            setDate('');
+        }
+        else {
+            setObj({
+                ...obj,
+                Name: name,
+                Age: age,
+                Date: regDate
+            });
+            console.log(obj);
+            fetch('/', {
+                method: 'POST',
+                body: JSON.stringify(obj),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            }).then(response => response.text()).then(response => alert(response));
+
+        }
+        // (!(age >= 18 && age <= 65)) ? alert("Not eligble") :
+        //     (!name || !regDate) ? alert("Fill the Deets correctly.")
+        //         : setObj({
+        //             ...obj,
+        //             Name: name,
+        //             Age: age,
+        //             Date: regDate
+        //         });
+        // console.log(obj);
+
+
     }
 
     const paperstyle = { padding: 20, height: 'fitContent', width: '350px', margin: '20px auto' }
